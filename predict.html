@@ -59,7 +59,7 @@
 
     <script>
         function generateCode() {
-            fetch('https://matchview-backend.onrender.com/generate-code')
+            fetch('https://matchview-backend-1.onrender.com/generate-code')
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('uniqueCode').textContent = "Your Code: " + data.code;
