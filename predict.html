@@ -100,10 +100,22 @@
             const code = document.getElementById('existingCode').value;
             if (code === "") {
                 alert("Please enter a code.");
-            } else {
-                // Placeholder for future login logic
-                alert("Attempting login with code: " + code);
+                return;
             }
+
+            fetch(`https://matchview-backend-1.onrender.com/login-code?code=${code}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message.includes("successfully")) {
+                        window.location.href = "dashboard.html";
+                    } else {
+                        alert("Invalid code. Please check your code or generate a new one.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("Something went wrong. Try again.");
+                });
         }
     </script>
 </body>
