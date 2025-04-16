@@ -5,24 +5,74 @@
     <title>Matchview</title>
     <style>
         body {
-            background-color: #0f172a;
-            color: #f1f5f9;
+            margin: 0;
             font-family: Arial, sans-serif;
-            text-align: center;
-            padding-top: 100px;
+            background-color: #1E3A8A;
+            color: #FFFFFF;
         }
-        h1 {
-            font-size: 48px;
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: #162F7A;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            font-size: 20px;
             margin-bottom: 20px;
+            border-bottom: 1px solid #ffffff33;
+            padding-bottom: 10px;
         }
-        p {
+
+        .sidebar a {
+            display: block;
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 10px 0;
+            transition: all 0.2s;
+        }
+
+        .sidebar a:hover {
+            color: #FFD700;
+            margin-left: 5px;
+        }
+
+        .main {
+            flex-grow: 1;
+            padding: 60px;
+            text-align: center;
+        }
+
+        .main h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .main p {
             font-size: 24px;
-            color: #94a3b8;
+            color: #FFFFFF;
         }
     </style>
 </head>
 <body>
-    <h1>Matchview</h1>
-    <p>Your Football Mate</p>
+    <div class="container">
+        <div class="sidebar">
+            <h2>FOOTBALL</h2>
+            <a href="#">News</a>
+            <a href="#">Highlights</a>
+            <a href="#">Scores</a>
+            <a href="#">Fixtures</a>
+            <a href="#">Standings</a>
+        </div>
+        <div class="main">
+            <h1>Matchview</h1>
+            <p>Your Football Mate</p>
+        </div>
+    </div>
 </body>
 </html>
