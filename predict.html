@@ -2,71 +2,74 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Make a Prediction - Matchview</title>
+    <title>Make a Prediction</title>
     <style>
         body {
             background-color: #1E3A8A;
             color: #FFFFFF;
             font-family: Arial, sans-serif;
             text-align: center;
-            padding: 60px;
+            padding: 50px;
         }
+
         h1 {
-            font-size: 32px;
+            font-size: 40px;
         }
+
+        p {
+            font-size: 20px;
+            margin: 20px 0;
+        }
+
         button {
-            background-color: #FFD700;
-            color: #1E3A8A;
             padding: 12px 24px;
             font-size: 18px;
+            background-color: #FFD700;
+            color: #162F7A;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            margin-top: 30px;
+            font-weight: bold;
         }
-        .code-box {
-            background-color: #162F7A;
-            padding: 20px;
-            border-radius: 10px;
-            margin-top: 30px;
-            display: none;
+
+        button:hover {
+            background-color: #FFC300;
         }
-        .code-box p {
-            font-size: 20px;
-            margin-bottom: 10px;
+
+        #uniqueCode {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #FFD700;
+        }
+
+        .warning {
+            margin-top: 10px;
+            color: #FF6666;
         }
     </style>
 </head>
 <body>
-
     <h1>Make Your Prediction</h1>
-    <p>Click below to generate your unique prediction code. <br> ⚠️ Keep it safe — you'll need it to track your predictions.</p>
-
+    <p>Click the button below to generate your unique prediction code. Keep it safe!</p>
     <button onclick="generateCode()">Generate Unique Code</button>
 
-    <div id="codeBox" class="code-box">
-        <p>Your Code:</p>
-        <h2 id="uniqueCode"></h2>
-        <button onclick="copyCode()">Copy Code</button>
-    </div>
+    <div id="uniqueCode"></div>
+    <p class="warning" id="warning"></p>
 
     <script>
         function generateCode() {
-            fetch("https://matchview-backend.onrender.com/generate-code")
+            fetch('https://matchview-backend.onrender.com/generate-code')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("uniqueCode").textContent = data.code;
-                    document.getElementById("codeBox").style.display = "block";
+                    document.getElementById('uniqueCode').textContent = "Your Code: " + data.code;
+                    document.getElementById('warning').textContent = "⚠️ Do not lose this code — it’s needed for your prediction!";
                 })
-                .catch(error => console.error('Error generating code:', error));
-        }
-
-        function copyCode() {
-            const codeText = document.getElementById("uniqueCode").textContent;
-            navigator.clipboard.writeText(codeText);
-            alert("Code copied to clipboard!");
+                .catch(error => {
+                    document.getElementById('uniqueCode').textContent = "Failed to generate code. Try again.";
+                    console.error('Error:', error);
+                });
         }
     </script>
-
 </body>
 </html>
