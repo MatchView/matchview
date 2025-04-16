@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Make a Prediction - Matchview</title>
+    <style>
+        body {
+            background-color: #1E3A8A;
+            color: #FFFFFF;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 60px;
+        }
+        h1 {
+            font-size: 32px;
+        }
+        button {
+            background-color: #FFD700;
+            color: #1E3A8A;
+            padding: 12px 24px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 30px;
+        }
+        .code-box {
+            background-color: #162F7A;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            display: none;
+        }
+        .code-box p {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Make Your Prediction</h1>
+    <p>Click below to generate your unique prediction code. <br> ⚠️ Keep it safe — you'll need it to track your predictions.</p>
+
+    <button onclick="generateCode()">Generate Unique Code</button>
+
+    <div id="codeBox" class="code-box">
+        <p>Your Code:</p>
+        <h2 id="uniqueCode"></h2>
+        <button onclick="copyCode()">Copy Code</button>
+    </div>
+
+    <script>
+        function generateCode() {
+            fetch("https://matchview-backend.onrender.com/generate-code")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("uniqueCode").textContent = data.code;
+                    document.getElementById("codeBox").style.display = "block";
+                })
+                .catch(error => console.error('Error generating code:', error));
+        }
+
+        function copyCode() {
+            const codeText = document.getElementById("uniqueCode").textContent;
+            navigator.clipboard.writeText(codeText);
+            alert("Code copied to clipboard!");
+        }
+    </script>
+
+</body>
+</html>
