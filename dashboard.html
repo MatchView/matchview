@@ -5,8 +5,8 @@
     <title>MatchView Dashboard</title>
     <style>
         body {
-            background-color: #1E3A8A;
-            color: #FFFFFF;
+            background-color: #F0F0F0;
+            color: #333333;
             font-family: Arial, sans-serif;
             margin: 0;
         }
@@ -14,24 +14,25 @@
         header {
             text-align: center;
             padding: 30px 20px 20px;
+            background-color: #E0E0E0;
         }
 
         h1 {
-            font-size: 42px;
-            color: #FFD700;
+            font-size: 36px;
+            color: #333333;
             margin: 0;
         }
 
         .tabs {
             display: flex;
             justify-content: center;
-            background-color: #162F7A;
+            background-color: #D0D0D0;
             padding: 10px 0;
         }
 
         .tabs button {
-            background-color: #1E3A8A;
-            color: #FFFFFF;
+            background-color: #E0E0E0;
+            color: #333333;
             border: none;
             padding: 12px 24px;
             font-size: 16px;
@@ -42,8 +43,7 @@
         }
 
         .tabs button:hover {
-            background-color: #FFD700;
-            color: #162F7A;
+            background-color: #CCCCCC;
         }
 
         .content {
@@ -58,8 +58,8 @@
             left: -300px;
             width: 280px;
             height: 100%;
-            background-color: #162F7A;
-            color: #FFFFFF;
+            background-color: #E0E0E0;
+            color: #333333;
             overflow-x: hidden;
             transition: 0.3s;
             padding: 30px 20px;
@@ -67,7 +67,7 @@
         }
 
         .profile-sidebar h2 {
-            color: #FFD700;
+            color: #333333;
             margin-bottom: 20px;
         }
 
@@ -79,146 +79,135 @@
             cursor: pointer;
         }
 
-        .profile-form {
-            background-color: #162F7A;
+        .form-container {
+            background-color: #FFFFFF;
             padding: 20px;
-            border-radius: 10px;
-            max-width: 400px;
+            border-radius: 12px;
+            max-width: 350px;
             margin: 30px auto;
-            text-align: left;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
-        .profile-form label {
-            display: block;
-            margin: 10px 0 5px;
+        .form-container h3 {
+            margin-bottom: 20px;
         }
 
-        .profile-form input, .profile-form select {
+        .form-container input,
+        .form-container select {
             width: 100%;
             padding: 10px;
-            margin-bottom: 15px;
-            border: none;
+            margin: 10px 0;
+            border: 1px solid #CCCCCC;
             border-radius: 6px;
-            font-size: 16px;
+            font-size: 14px;
         }
 
-        .profile-form button {
-            background-color: #FFD700;
-            color: #162F7A;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
+        .form-container button {
             width: 100%;
+            padding: 12px;
+            background-color: #333333;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
-        .profile-form button:hover {
-            background-color: #FFC300;
+        .form-container button:hover {
+            background-color: #555555;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>MatchView Predictions Competition</h1>
-    </header>
+<header>
+    <h1>MatchView Predictions</h1>
+</header>
 
-    <div class="tabs">
-        <button onclick="toggleProfile()">Profile</button>
+<div class="tabs">
+    <button onclick="toggleProfile()">Profile</button>
+</div>
+
+<div id="content" class="content">
+    <div class="form-container">
+        <h3>Complete Your Profile</h3>
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="text" id="surname" placeholder="Surname" required>
+        <select id="gender" required>
+            <option value="">Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+        </select>
+        <select id="province" required>
+            <option value="">Select Province</option>
+            <option value="Gauteng">Gauteng</option>
+            <option value="Western Cape">Western Cape</option>
+            <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+            <option value="Eastern Cape">Eastern Cape</option>
+            <option value="Limpopo">Limpopo</option>
+            <option value="Mpumalanga">Mpumalanga</option>
+            <option value="North West">North West</option>
+            <option value="Free State">Free State</option>
+            <option value="Northern Cape">Northern Cape</option>
+        </select>
+        <input type="email" id="email" placeholder="Email (optional)">
+        <button onclick="saveProfile()">Save Profile</button>
     </div>
+</div>
 
-    <div id="content" class="content">
-        <p>Welcome to your dashboard!</p>
-    </div>
+<div id="profileSidebar" class="profile-sidebar">
+    <span class="close-btn" onclick="toggleProfile()">&times;</span>
+    <h2>Your Profile</h2>
+    <div id="profileDetails"></div>
+</div>
 
-    <div id="profileSidebar" class="profile-sidebar">
-        <span class="close-btn" onclick="toggleProfile()">&times;</span>
-        <h2>Your Profile</h2>
-        <div id="profileDetails"></div>
-    </div>
-
-    <script>
-        // Get or generate the unique code
-        let code = localStorage.getItem("uniqueCode");
-        if (!code) {
-            code = generateCode();
-            localStorage.setItem("uniqueCode", code);
-        }
-
-        // Check if profile exists
-        const profiles = JSON.parse(localStorage.getItem("profiles") || "{}");
-        if (!profiles[code]) {
-            showProfileForm();
+<script>
+    function toggleProfile() {
+        const sidebar = document.getElementById("profileSidebar");
+        if (sidebar.style.left === "0px") {
+            sidebar.style.left = "-300px";
         } else {
-            document.getElementById("content").innerHTML = "<p>Your profile is already set.</p>";
-        }
-
-        function toggleProfile() {
-            const sidebar = document.getElementById("profileSidebar");
-            if (sidebar.style.left === "0px") {
-                sidebar.style.left = "-300px";
-            } else {
-                const userProfile = profiles[code];
-                document.getElementById("profileDetails").innerHTML = `
-                    <p><strong>Code:</strong> ${code}</p>
-                    <p><strong>Name:</strong> ${userProfile.name}</p>
-                    <p><strong>Surname:</strong> ${userProfile.surname}</p>
-                    <p><strong>Gender:</strong> ${userProfile.gender}</p>
-                    <p><strong>Province:</strong> ${userProfile.province}</p>
-                    <p><strong>Email:</strong> ${userProfile.email || 'N/A'}</p>
-                `;
-                sidebar.style.left = "0px";
+            const profile = JSON.parse(localStorage.getItem("userProfile"));
+            if (profile) {
+                displayProfile(profile);
             }
+            sidebar.style.left = "0px";
+        }
+    }
+
+    function saveProfile() {
+        const name = document.getElementById("name").value;
+        const surname = document.getElementById("surname").value;
+        const gender = document.getElementById("gender").value;
+        const province = document.getElementById("province").value;
+        const email = document.getElementById("email").value;
+
+        if (!name || !surname || !gender || !province) {
+            alert("Please fill in all required fields.");
+            return;
         }
 
-        function showProfileForm() {
-            document.getElementById("content").innerHTML = `
-                <div class="profile-form">
-                    <h2>Create Your Profile</h2>
-                    <label>Name</label>
-                    <input type="text" id="name">
-                    <label>Surname</label>
-                    <input type="text" id="surname">
-                    <label>Gender</label>
-                    <select id="gender">
-                        <option value="">Select Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
-                    <label>Province</label>
-                    <input type="text" id="province">
-                    <label>Email (Optional)</label>
-                    <input type="email" id="email">
-                    <button onclick="saveProfile()">Save Profile</button>
-                </div>
-            `;
-        }
+        const profile = { name, surname, gender, province, email };
+        localStorage.setItem("userProfile", JSON.stringify(profile));
+        alert("Profile saved successfully!");
 
-        function saveProfile() {
-            const name = document.getElementById("name").value;
-            const surname = document.getElementById("surname").value;
-            const gender = document.getElementById("gender").value;
-            const province = document.getElementById("province").value;
-            const email = document.getElementById("email").value;
+        displayProfile(profile);
+        toggleProfile();
+    }
 
-            if (!name || !surname || !gender || !province) {
-                alert("Please fill in all required fields.");
-                return;
-            }
-
-            profiles[code] = { name, surname, gender, province, email };
-            localStorage.setItem("profiles", JSON.stringify(profiles));
-
-            alert("Profile saved successfully!");
-            document.getElementById("content").innerHTML = "<p>Welcome to your dashboard!</p>";
-        }
-
-        function generateCode() {
-            return Math.random().toString(36).substring(2, 10).toUpperCase();
-        }
-    </script>
+    function displayProfile(profile) {
+        const detailsDiv = document.getElementById("profileDetails");
+        detailsDiv.innerHTML = `
+            <p><strong>Name:</strong> ${profile.name}</p>
+            <p><strong>Surname:</strong> ${profile.surname}</p>
+            <p><strong>Gender:</strong> ${profile.gender}</p>
+            <p><strong>Province:</strong> ${profile.province}</p>
+            ${profile.email ? `<p><strong>Email:</strong> ${profile.email}</p>` : ''}
+        `;
+    }
+</script>
 
 </body>
 </html>
