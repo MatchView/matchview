@@ -82,21 +82,23 @@
         .profile-sidebar input,
         .profile-sidebar select {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
+            padding: 10px;
+            margin-bottom: 12px;
             border: 1px solid #ccc;
             border-radius: 6px;
             box-sizing: border-box;
+            font-size: 14px;
         }
 
         .profile-sidebar button {
             background-color: #333;
             color: #fff;
             border: none;
-            padding: 10px 0;
+            padding: 12px 0;
             width: 100%;
             border-radius: 6px;
             cursor: pointer;
+            font-size: 16px;
         }
 
         .profile-sidebar button:hover {
@@ -124,11 +126,24 @@
 </div>
 
 <script>
-let userCode = prompt("Enter your unique code");
+let userCode = "";
 
-async function loadProfile() {
+function toggleProfile() {
+    const sidebar = document.getElementById("profileSidebar");
+    if (sidebar.style.left === "0px") {
+        sidebar.style.left = "-300px";
+    } else {
+        userCode = prompt("Enter your unique code");
+        if (userCode && userCode.trim() !== "") {
+            loadProfile(userCode);
+            sidebar.style.left = "0px";
+        }
+    }
+}
+
+async function loadProfile(code) {
     try {
-        const response = await fetch(`http://127.0.0.1:8000/profile/${userCode}`);
+        const response = await fetch(`http://127.0.0.1:8000/profile/${code}`);
         if (!response.ok) throw new Error("Profile not found");
 
         const profile = await response.json();
@@ -147,6 +162,7 @@ function displayProfile(profile) {
         <p><strong>Gender:</strong> ${profile.gender}</p>
         <p><strong>Province:</strong> ${profile.province}</p>
         <p><strong>Email:</strong> ${profile.email}</p>
+        <button onclick="toggleProfile()">Close</button>
     `;
 }
 
@@ -190,7 +206,7 @@ async function saveProfile() {
 
     const response = await fetch(`http://127.0.0.1:8000/profile/${userCode}`, {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(profile)
     });
 
@@ -198,19 +214,7 @@ async function saveProfile() {
         displayProfile(profile);
     }
 }
-
-function toggleProfile() {
-    const sidebar = document.getElementById("profileSidebar");
-    if (sidebar.style.left === "0px") {
-        sidebar.style.left = "-300px";
-    } else {
-        sidebar.style.left = "0px";
-    }
-}
-
-window.onload = loadProfile;
 </script>
 
 </body>
 </html>
-
