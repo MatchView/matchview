@@ -8,17 +8,123 @@
             background-color: #1E3A8A;
             color: #FFFFFF;
             font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        header {
             text-align: center;
-            padding: 50px;
+            padding: 30px 20px 20px;
         }
 
         h1 {
             font-size: 42px;
             color: #FFD700;
+            margin: 0;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            background-color: #162F7A;
+            padding: 10px 0;
+        }
+
+        .tabs button {
+            background-color: #1E3A8A;
+            color: #FFFFFF;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 0 5px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .tabs button:hover {
+            background-color: #FFD700;
+            color: #162F7A;
+        }
+
+        .content {
+            padding: 30px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .profile-sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100%;
+            background-color: #162F7A;
+            color: #FFFFFF;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding: 30px 20px;
+            z-index: 1000;
+        }
+
+        .profile-sidebar h2 {
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <h1>MatchView Predictions Competition</h1>
+
+    <header>
+        <h1>MatchView Predictions Competition</h1>
+    </header>
+
+    <div class="tabs">
+        <button onclick="toggleProfile()">Profile</button>
+        <button onclick="showContent('fixtures')">Fixtures</button>
+        <button onclick="showContent('leaderboard')">Leaderboard</button>
+    </div>
+
+    <div id="content" class="content">
+        <p>Welcome to your dashboard! Select a tab above to view content.</p>
+    </div>
+
+    <div id="profileSidebar" class="profile-sidebar">
+        <span class="close-btn" onclick="toggleProfile()">&times;</span>
+        <h2>Your Profile</h2>
+        <p><strong>Code:</strong> RHGV0LNK</p>
+        <p><strong>Predictions Made:</strong> 5</p>
+        <p><strong>Points:</strong> 12</p>
+        <!-- You can dynamically fill this later -->
+    </div>
+
+    <script>
+        function showContent(tab) {
+            let content = document.getElementById("content");
+            if (tab === "fixtures") {
+                content.innerHTML = "<p>Here are your upcoming fixtures.</p>";
+            } else if (tab === "leaderboard") {
+                content.innerHTML = "<p>Leaderboard standings will appear here.</p>";
+            }
+        }
+
+        function toggleProfile() {
+            const sidebar = document.getElementById("profileSidebar");
+            if (sidebar.style.left === "0px") {
+                sidebar.style.left = "-300px";
+            } else {
+                sidebar.style.left = "0px";
+            }
+        }
+    </script>
+
 </body>
 </html>
+
