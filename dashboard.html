@@ -79,103 +79,146 @@
             cursor: pointer;
         }
 
-        .profile-sidebar input, .profile-sidebar select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 4px;
-            margin-bottom: 10px;
-            border: none;
-            border-radius: 4px;
+        .profile-form {
+            background-color: #162F7A;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: 30px auto;
+            text-align: left;
         }
 
-        .profile-sidebar button {
+        .profile-form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .profile-form input, .profile-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .profile-form button {
             background-color: #FFD700;
             color: #162F7A;
             border: none;
-            padding: 10px 16px;
-            font-size: 16px;
-            border-radius: 4px;
+            padding: 12px 20px;
+            border-radius: 6px;
             cursor: pointer;
+            font-size: 16px;
+            width: 100%;
         }
 
-        .profile-sidebar button:hover {
-            background-color: #FFFFFF;
-            color: #162F7A;
+        .profile-form button:hover {
+            background-color: #FFC300;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>MatchView Predictions Competition</h1>
-</header>
+    <header>
+        <h1>MatchView Predictions Competition</h1>
+    </header>
 
-<div class="tabs">
-    <button onclick="toggleProfile()">Profile</button>
-</div>
+    <div class="tabs">
+        <button onclick="toggleProfile()">Profile</button>
+    </div>
 
-<div id="content" class="content">
-    <p>Welcome to your dashboard! Click 'Profile' to set up your info.</p>
-</div>
+    <div id="content" class="content">
+        <p>Welcome to your dashboard!</p>
+    </div>
 
-<div id="profileSidebar" class="profile-sidebar">
-    <span class="close-btn" onclick="toggleProfile()">&times;</span>
-    <h2>Your Profile</h2>
+    <div id="profileSidebar" class="profile-sidebar">
+        <span class="close-btn" onclick="toggleProfile()">&times;</span>
+        <h2>Your Profile</h2>
+        <div id="profileDetails"></div>
+    </div>
 
-    <form id="profileForm">
-        <label for="name">Name*</label><br>
-        <input type="text" id="name" name="name" required><br>
-
-        <label for="surname">Surname*</label><br>
-        <input type="text" id="surname" name="surname" required><br>
-
-        <label for="gender">Gender*</label><br>
-        <select id="gender" name="gender" required>
-            <option value="">Select</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-        </select><br>
-
-        <label for="province">Province*</label><br>
-        <select id="province" name="province" required>
-            <option value="">Select</option>
-            <option value="Gauteng">Gauteng</option>
-            <option value="Western Cape">Western Cape</option>
-            <option value="KwaZulu-Natal">KwaZulu-Natal</option>
-            <option value="Eastern Cape">Eastern Cape</option>
-            <option value="Limpopo">Limpopo</option>
-            <option value="Mpumalanga">Mpumalanga</option>
-            <option value="Free State">Free State</option>
-            <option value="North West">North West</option>
-            <option value="Northern Cape">Northern Cape</option>
-        </select><br>
-
-        <label for="email">Email (optional)</label><br>
-        <input type="email" id="email" name="email"><br><br>
-
-        <button type="submit">Save Profile</button>
-    </form>
-
-</div>
-
-<script>
-    function toggleProfile() {
-        const sidebar = document.getElementById("profileSidebar");
-        if (sidebar.style.left === "0px") {
-            sidebar.style.left = "-300px";
-        } else {
-            sidebar.style.left = "0px";
+    <script>
+        // Get or generate the unique code
+        let code = localStorage.getItem("uniqueCode");
+        if (!code) {
+            code = generateCode();
+            localStorage.setItem("uniqueCode", code);
         }
-    }
 
-    document.getElementById("profileForm").addEventListener("submit", function(e) {
-        e.preventDefault();
-        // Placeholder: Here you'll send the form data to your backend
-        alert("Profile info saved (simulation)");
-        toggleProfile();
-    });
-</script>
+        // Check if profile exists
+        const profiles = JSON.parse(localStorage.getItem("profiles") || "{}");
+        if (!profiles[code]) {
+            showProfileForm();
+        } else {
+            document.getElementById("content").innerHTML = "<p>Your profile is already set.</p>";
+        }
+
+        function toggleProfile() {
+            const sidebar = document.getElementById("profileSidebar");
+            if (sidebar.style.left === "0px") {
+                sidebar.style.left = "-300px";
+            } else {
+                const userProfile = profiles[code];
+                document.getElementById("profileDetails").innerHTML = `
+                    <p><strong>Code:</strong> ${code}</p>
+                    <p><strong>Name:</strong> ${userProfile.name}</p>
+                    <p><strong>Surname:</strong> ${userProfile.surname}</p>
+                    <p><strong>Gender:</strong> ${userProfile.gender}</p>
+                    <p><strong>Province:</strong> ${userProfile.province}</p>
+                    <p><strong>Email:</strong> ${userProfile.email || 'N/A'}</p>
+                `;
+                sidebar.style.left = "0px";
+            }
+        }
+
+        function showProfileForm() {
+            document.getElementById("content").innerHTML = `
+                <div class="profile-form">
+                    <h2>Create Your Profile</h2>
+                    <label>Name</label>
+                    <input type="text" id="name">
+                    <label>Surname</label>
+                    <input type="text" id="surname">
+                    <label>Gender</label>
+                    <select id="gender">
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <label>Province</label>
+                    <input type="text" id="province">
+                    <label>Email (Optional)</label>
+                    <input type="email" id="email">
+                    <button onclick="saveProfile()">Save Profile</button>
+                </div>
+            `;
+        }
+
+        function saveProfile() {
+            const name = document.getElementById("name").value;
+            const surname = document.getElementById("surname").value;
+            const gender = document.getElementById("gender").value;
+            const province = document.getElementById("province").value;
+            const email = document.getElementById("email").value;
+
+            if (!name || !surname || !gender || !province) {
+                alert("Please fill in all required fields.");
+                return;
+            }
+
+            profiles[code] = { name, surname, gender, province, email };
+            localStorage.setItem("profiles", JSON.stringify(profiles));
+
+            alert("Profile saved successfully!");
+            document.getElementById("content").innerHTML = "<p>Welcome to your dashboard!</p>";
+        }
+
+        function generateCode() {
+            return Math.random().toString(36).substring(2, 10).toUpperCase();
+        }
+    </script>
 
 </body>
 </html>
