@@ -1,250 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>MatchView Dashboard</title>
-    <style>
-        body {
-            background-color: #F3F4F6;
-            color: #111827;
-            font-family: Arial, sans-serif;
-            margin: 0;
-        }
+  <meta charset="UTF-8">
+  <title>MatchView Dashboard</title>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      color: #333;
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
 
-        header {
-            text-align: center;
-            padding: 30px 20px 20px;
-        }
+    header {
+      text-align: center;
+      padding: 30px 20px 20px;
+    }
 
-        h1 {
-            font-size: 42px;
-            color: #111827;
-            margin: 0;
-        }
+    h1 {
+      font-size: 36px;
+      color: #222;
+      margin: 0;
+    }
 
-        .tabs {
-            display: flex;
-            justify-content: center;
-            background-color: #E5E7EB;
-            padding: 10px 0;
-        }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      background-color: #ddd;
+      padding: 10px 0;
+    }
 
-        .tabs button {
-            background-color: #D1D5DB;
-            color: #111827;
-            border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 0 5px;
-            border-radius: 6px;
-            font-weight: bold;
-        }
+    .tabs button {
+      background-color: #fff;
+      color: #333;
+      border: 1px solid #ccc;
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 0 5px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
 
-        .tabs button:hover {
-            background-color: #9CA3AF;
-            color: #FFFFFF;
-        }
+    .tabs button:hover {
+      background-color: #ccc;
+    }
 
-        .content {
-            padding: 30px;
-            text-align: center;
-            font-size: 18px;
-        }
+    .content {
+      padding: 30px;
+      text-align: center;
+      font-size: 20px;
+    }
 
-        .profile-sidebar {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 280px;
-            height: 100%;
-            background-color: #374151;
-            color: #FFFFFF;
-            overflow-x: hidden;
-            transition: 0.3s;
-            padding: 30px 20px;
-            z-index: 1000;
-        }
+    .profile-sidebar {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 280px;
+      height: 100%;
+      background-color: #fff;
+      color: #333;
+      overflow-x: hidden;
+      transition: 0.3s;
+      padding: 30px 20px;
+      z-index: 1000;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.2);
+    }
 
-        .profile-sidebar h2 {
-            color: #FBBF24;
-            margin-bottom: 20px;
-        }
+    .profile-sidebar h2 {
+      color: #222;
+      margin-bottom: 20px;
+    }
 
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-        }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+    }
 
-        .form-container {
-            background-color: #FFFFFF;
-            color: #111827;
-            padding: 20px;
-            max-width: 400px;
-            margin: 20px auto;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
 
-        .form-container h2 {
-            margin-bottom: 20px;
-        }
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
 
-        .form-container label {
-            display: block;
-            text-align: left;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
 
-        .form-container input, 
-        .form-container select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #D1D5DB;
-            border-radius: 6px;
-            font-size: 16px;
-        }
+    .save-btn {
+      background-color: #333;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
 
-        .form-container button {
-            background-color: #374151;
-            color: #FFFFFF;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-        }
+    .save-btn:hover {
+      background-color: #555;
+    }
 
-        .form-container button:hover {
-            background-color: #111827;
-        }
-
-    </style>
+    .success-message {
+      font-size: 18px;
+      color: #28a745;
+    }
+  </style>
 </head>
 <body>
 
-<header>
+  <header>
     <h1>MatchView Predictions Competition</h1>
-</header>
+  </header>
 
-<div class="tabs">
+  <div class="tabs">
     <button onclick="toggleProfile()">Profile</button>
-</div>
+  </div>
 
-<div id="content" class="content">
-    <p>Welcome to your dashboard! Click the Profile tab to get started.</p>
-</div>
+  <div id="content" class="content">
+    <p>Welcome to your dashboard!</p>
+  </div>
 
-<div id="profileSidebar" class="profile-sidebar">
+  <div id="profileSidebar" class="profile-sidebar">
     <span class="close-btn" onclick="toggleProfile()">&times;</span>
     <h2>Your Profile</h2>
-    <p><strong>Name:</strong> <span id="profileName"></span></p>
-    <p><strong>Surname:</strong> <span id="profileSurname"></span></p>
-    <p><strong>Gender:</strong> <span id="profileGender"></span></p>
-    <p><strong>Province:</strong> <span id="profileProvince"></span></p>
-    <p><strong>Email:</strong> <span id="profileEmail"></span></p>
-</div>
+    <div id="profileContent"></div>
+  </div>
 
-<script>
-    function toggleProfile() {
-        const sidebar = document.getElementById("profileSidebar");
-        if (sidebar.style.left === "0px") {
-            sidebar.style.left = "-300px";
-        } else {
-            sidebar.style.left = "0px";
-        }
+  <script>
+    // Get code from URL
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
     }
 
-    // Load profile or show form
+    const code = getQueryParam('code');
+
+    function toggleProfile() {
+      const sidebar = document.getElementById("profileSidebar");
+      if (sidebar.style.left === "0px") {
+        sidebar.style.left = "-300px";
+      } else {
+        sidebar.style.left = "0px";
+        loadProfile();
+      }
+    }
+
     function loadProfile() {
-        const profile = JSON.parse(localStorage.getItem("userProfile"));
+      const profileContent = document.getElementById("profileContent");
+      const savedProfile = localStorage.getItem("profile_" + code);
 
-        let content = document.getElementById("content");
+      if (savedProfile) {
+        const profile = JSON.parse(savedProfile);
+        profileContent.innerHTML = `
+          <p><strong>Name:</strong> ${profile.name}</p>
+          <p><strong>Surname:</strong> ${profile.surname}</p>
+          <p><strong>Gender:</strong> ${profile.gender}</p>
+          <p><strong>Province:</strong> ${profile.province}</p>
+          ${profile.email ? `<p><strong>Email:</strong> ${profile.email}</p>` : ""}
+        `;
+      } else {
+        profileContent.innerHTML = `
+          <form id="profileForm">
+            <div class="form-group">
+              <label>Name</label>
+              <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+              <label>Surname</label>
+              <input type="text" id="surname" required>
+            </div>
+            <div class="form-group">
+              <label>Gender</label>
+              <select id="gender" required>
+                <option value="">Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Province</label>
+              <select id="province" required>
+                <option value="">Select</option>
+                <option value="Gauteng">Gauteng</option>
+                <option value="KwaZulu-Natal">KwaZulu-Natal</option>
+                <option value="Western Cape">Western Cape</option>
+                <option value="Eastern Cape">Eastern Cape</option>
+                <option value="Limpopo">Limpopo</option>
+                <option value="Mpumalanga">Mpumalanga</option>
+                <option value="North West">North West</option>
+                <option value="Northern Cape">Northern Cape</option>
+                <option value="Free State">Free State</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Email (optional)</label>
+              <input type="email" id="email">
+            </div>
+            <button type="submit" class="save-btn">Save Profile</button>
+          </form>
+        `;
 
-        if (profile) {
-            displayProfile(profile);
-            content.innerHTML = "<h2>Welcome back to MatchView Predictions!</h2>";
-        } else {
-            content.innerHTML = `
-                <div class="form-container">
-                    <h2>Create Your Profile</h2>
-                    <label for="name">Name</label>
-                    <input type="text" id="name" required>
-
-                    <label for="surname">Surname</label>
-                    <input type="text" id="surname" required>
-
-                    <label for="gender">Gender</label>
-                    <select id="gender" required>
-                        <option value="">Select gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                    </select>
-
-                    <label for="province">Province</label>
-                    <select id="province" required>
-                        <option value="">Select province</option>
-                        <option value="Gauteng">Gauteng</option>
-                        <option value="Western Cape">Western Cape</option>
-                        <option value="KwaZulu-Natal">KwaZulu-Natal</option>
-                        <option value="Eastern Cape">Eastern Cape</option>
-                        <option value="Mpumalanga">Mpumalanga</option>
-                        <option value="Limpopo">Limpopo</option>
-                        <option value="North West">North West</option>
-                        <option value="Northern Cape">Northern Cape</option>
-                        <option value="Free State">Free State</option>
-                    </select>
-
-                    <label for="email">Email (optional)</label>
-                    <input type="email" id="email">
-
-                    <button onclick="saveProfile()">Save Profile</button>
-                </div>
-            `;
+        document.getElementById("profileForm").onsubmit = function(e) {
+          e.preventDefault();
+          saveProfile();
         }
+      }
     }
 
     function saveProfile() {
-        const name = document.getElementById("name").value;
-        const surname = document.getElementById("surname").value;
-        const gender = document.getElementById("gender").value;
-        const province = document.getElementById("province").value;
-        const email = document.getElementById("email").value;
+      const profile = {
+        name: document.getElementById("name").value,
+        surname: document.getElementById("surname").value,
+        gender: document.getElementById("gender").value,
+        province: document.getElementById("province").value,
+        email: document.getElementById("email").value
+      };
 
-        if (!name || !surname || !gender || !province) {
-            alert("Please fill in all required fields.");
-            return;
-        }
+      localStorage.setItem("profile_" + code, JSON.stringify(profile));
 
-        const profile = { name, surname, gender, province, email };
-        localStorage.setItem("userProfile", JSON.stringify(profile));
-        alert("Profile saved successfully!");
-
-        displayProfile(profile);
-
-        // Replace form with welcome message
-        document.getElementById("content").innerHTML = "<h2>Thank you, your profile has been saved!</h2>";
-        toggleProfile();
+      const profileContent = document.getElementById("profileContent");
+      profileContent.innerHTML = `<p class="success-message">Profile saved successfully!</p>`;
     }
-
-    function displayProfile(profile) {
-        document.getElementById("profileName").innerText = profile.name;
-        document.getElementById("profileSurname").innerText = profile.surname;
-        document.getElementById("profileGender").innerText = profile.gender;
-        document.getElementById("profileProvince").innerText = profile.province;
-        document.getElementById("profileEmail").innerText = profile.email || "-";
-    }
-
-    // Load on page start
-    loadProfile();
-</script>
+  </script>
 
 </body>
 </html>
