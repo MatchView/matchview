@@ -141,13 +141,14 @@
   </div>
 
   <script>
-    // Get code from URL
+    // Function to get code from URL
     function getQueryParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param);
     }
 
-    const code = getQueryParam('code');
+    // Get code when page loads
+    let code = getQueryParam('code');
 
     function toggleProfile() {
       const sidebar = document.getElementById("profileSidebar");
