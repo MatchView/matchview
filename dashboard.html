@@ -52,6 +52,35 @@
             font-size: 20px;
         }
 
+        .fixture-card {
+            background-color: #162F7A;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 500px;
+        }
+
+        .fixture-card h3 {
+            margin-bottom: 15px;
+        }
+
+        .odds-btn {
+            background-color: #1E3A8A;
+            color: #FFFFFF;
+            border: none;
+            padding: 12px 20px;
+            margin: 10px 5px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        .odds-btn:hover {
+            background-color: #FFD700;
+            color: #162F7A;
+        }
+
         .profile-sidebar {
             position: fixed;
             top: 0;
@@ -102,14 +131,13 @@
         <p><strong>Code:</strong> RHGV0LNK</p>
         <p><strong>Predictions Made:</strong> 5</p>
         <p><strong>Points:</strong> 12</p>
-        <!-- You can dynamically fill this later -->
     </div>
 
     <script>
         function showContent(tab) {
             let content = document.getElementById("content");
             if (tab === "fixtures") {
-                content.innerHTML = "<p>Here are your upcoming fixtures.</p>";
+                loadFixtures();
             } else if (tab === "leaderboard") {
                 content.innerHTML = "<p>Leaderboard standings will appear here.</p>";
             }
@@ -122,6 +150,37 @@
             } else {
                 sidebar.style.left = "0px";
             }
+        }
+
+        // Load fixtures and display them
+        async function loadFixtures() {
+            const response = await fetch('https://your-backend-url/fixtures'); // Update to your deployed backend URL
+            const data = await response.json();
+
+            let content = document.getElementById("content");
+            content.innerHTML = "<h2>Upcoming Fixtures</h2>";
+
+            data.forEach(fixture => {
+                const fixtureDiv = document.createElement("div");
+                fixtureDiv.className = "fixture-card";
+
+                const title = document.createElement("h3");
+                title.innerText = `${fixture.home_team} vs ${fixture.away_team}`;
+                fixtureDiv.appendChild(title);
+
+                fixture.odds.forEach(option => {
+                    const btn = document.createElement("button");
+                    btn.className = "odds-btn";
+                    btn.innerText = `${option.label} \n ${option.points} pts`;
+                    btn.onclick = () => {
+                        btn.style.backgroundColor = "#FFD700";
+                        btn.style.color = "#162F7A";
+                    };
+                    fixtureDiv.appendChild(btn);
+                });
+
+                content.appendChild(fixtureDiv);
+            });
         }
     </script>
 
